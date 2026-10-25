@@ -1,0 +1,120 @@
+//Large Program 01 - APCS Amusement Park
+
+let input = await readLineAsync("Enter the codes (location, day, start time, end time and the same for day 2, separated by commas):");
+
+let output = input.split(",");
+let timeCodes = ["1","2","3","4","5","6","7","8","9","A","B","C","D","E","F","G","H"];
+
+for (let i = 0; i < output.length; i++) {
+    output[i] = output[i].trim();
+}
+
+// LOCATION
+let location1 = parseInt(output[0]);
+let location2 = parseInt(output[4]);
+
+// ---------- TIME CONVERSION ----------
+
+// DAY 1 START
+let startTime1 = 0;
+for (let i = 0; i < timeCodes.length; i++) {
+    if (output[2] == timeCodes[i]) {
+        startTime1 = (0.5 * i) + 9;
+        break;
+    }
+}
+
+// DAY 1 END
+let endTime1 = 0;
+for (let i = 0; i < timeCodes.length; i++) {
+    if (output[3] == timeCodes[i]) {
+        endTime1 = (0.5 * i) + 9;
+        break;
+    }
+}
+
+// DAY 2 START
+let startTime2 = 0;
+for (let i = 0; i < timeCodes.length; i++) {
+    if (output[6] == timeCodes[i]) {
+        startTime2 = (0.5 * i) + 9;
+        break;
+    }
+}
+
+// DAY 2 END
+let endTime2 = 0;
+for (let i = 0; i < timeCodes.length; i++) {
+    if (output[7] == timeCodes[i]) {
+        endTime2 = (0.5 * i) + 9;
+        break;
+    }
+}
+
+// HOURS WORKED
+let hoursDay1 = endTime1 - startTime1;
+let hoursDay2 = endTime2 - startTime2;
+
+// DAYS
+let day1 = parseInt(output[1]);
+let day2 = parseInt(output[5]);
+
+let payDay1 = 0;
+let payDay2 = 0;
+
+// ---------- PAY CALCULATION FUNCTION ----------
+function calculatePay(hours, day, location) {
+
+    let pay = 0;
+
+    if (location >= 100 && location <= 199) {
+
+        if (hours <= 5) {
+            pay = hours * 10;
+        } else {
+            pay = (5 * 10) + ((hours - 5) * 15);
+        }
+
+    } else if (location >= 200 && location <= 299) {
+
+        if (hours <= 6) {
+            pay = hours * 7.50;
+        } else {
+            pay = (6 * 7.50) + ((hours - 6) * 15);
+        }
+
+    } else if (location >= 300 && location <= 399) {
+
+        if (hours <= 4) {
+            pay = hours * 9.25;
+        } else {
+            pay = (4 * 9.25) + ((hours - 4) * 10.50);
+        }
+
+    } else if (location >= 400 && location <= 499) {
+
+        if (day == 1 || day == 7) {
+            pay = hours * 13.50;
+        } else {
+            pay = hours * 6.75;
+        }
+
+    } else if (location >= 500 && location <= 599) {
+
+        if (hours <= 6) {
+            pay = hours * 8;
+        } else {
+            pay = (6 * 8) + ((hours - 6) * 12);
+        }
+
+    }
+
+    return pay;
+}
+
+// CALCULATE PAY
+payDay1 = calculatePay(hoursDay1, day1, location1);
+payDay2 = calculatePay(hoursDay2, day2, location2);
+
+let totalPay = payDay1 + payDay2;
+console.log("Total Pay: $" + totalPay.toFixed(2));
